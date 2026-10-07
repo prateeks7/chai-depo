@@ -1,0 +1,72 @@
+.field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--ing);
+}
+
+.item {
+  position: absolute;
+  display: block;
+}
+
+/* Slow, endless float. The transform stays free for GSAP and the item's own rotation. */
+@media (prefers-reduced-motion: no-preference) {
+  .item {
+    animation: drift var(--dur, 9s) ease-in-out var(--delay, 0s) infinite alternate;
+  }
+}
+
+@keyframes drift {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: var(--dx, 0) var(--dy, -10px);
+  }
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.fill {
+  fill: color-mix(in oklab, currentColor 13%, transparent);
+  stroke: currentColor;
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.dot {
+  fill: currentColor;
+  opacity: 0.8;
+}
+
+/* Depth opacity sits on the items: GSAP animates the field's own opacity. */
+.back .item {
+  opacity: 0.26;
+}
+
+.mid .item {
+  opacity: 0.6;
+}
+
+.front .item {
+  opacity: 0.85;
+  filter: blur(1.5px);
+}
+
+.front .fill {
+  stroke-width: 1.8;
+}

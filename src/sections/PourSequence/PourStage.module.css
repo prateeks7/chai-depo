@@ -1,0 +1,479 @@
+.pour {
+  position: relative;
+}
+
+/*
+ * Layers are ordered by DOM position with no z-index, so no layer forms its own
+ * stacking context and any blended element mixes with the stage colour.
+ */
+.stage {
+  --stage: #17120e;
+  --accent: #b87a4b;
+  --glow: #d9a574;
+  --liquid: #9a6644;
+  --cup: #d9a574;
+  --steam: 0.75;
+
+  --floor: 9vh;
+  --top: calc(var(--header-h) + 4vh);
+  --avail: calc(100vh - var(--floor) - var(--top));
+  --content-left: max(var(--gutter), calc((100% - var(--max)) / 2 + var(--gutter)));
+  --content-right: var(--content-left);
+  /* The label card: whole label, standing on the shelf, as tall as the stage allows
+     (labels are 2:3 or a touch wider), no wider than a third of the screen. */
+  --label-h: min(calc(var(--avail) - 1vh), 50vw);
+  --panel-w: calc(var(--label-h) * 0.675);
+  --label-r: 10px;
+  /* The copy column, and the cup centred in the space left between it and the label. */
+  --copy-w: min(34%, 500px);
+  --cup-x: calc((var(--content-left) + var(--copy-w) + 100% - var(--content-right) - var(--panel-w)) / 2);
+
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--stage);
+}
+
+.ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--floor);
+  background: linear-gradient(to bottom, rgb(0 0 0 / 0.28), rgb(0 0 0 / 0.5));
+}
+
+.shelf {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--floor);
+  height: 5px;
+  border-top: 1px solid color-mix(in oklab, var(--accent) 50%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+/* Giant inline word standing on the shelf, behind everything. */
+.wordSlot {
+  position: absolute;
+  left: var(--cup-x);
+  bottom: var(--floor);
+  width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.word {
+  position: absolute;
+  bottom: -0.1em;
+  font-family: var(--font-inline);
+  font-size: min(18vw, 31vh);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: color-mix(in oklab, var(--word) 26%, transparent);
+  user-select: none;
+}
+
+/* GSAP animates the word; the inner span carries the scroll lean. */
+.wordLean {
+  display: inline-block;
+  transform: skewY(var(--vskew, 0deg));
+  transition: transform 0.25s linear;
+}
+
+.field {
+  font-size: 1vh;
+}
+
+.archSlot {
+  position: absolute;
+  left: 69%;
+  bottom: calc(var(--floor) + 10vh);
+  width: 0;
+  height: calc(var(--avail) - 8vh);
+  display: flex;
+  justify-content: center;
+}
+
+.arch {
+  flex: none;
+  height: 100%;
+}
+
+.arch > * {
+  height: 100%;
+}
+
+/*
+ * The printed label as a card standing on the shelf at the right of the stage, inside
+ * the same margins as the copy and clear of the floor band. It carries the stage's light:
+ * a soft sheen from above, a hairline edge, a shadow onto the stage and onto the shelf.
+ */
+.packSlot {
+  position: absolute;
+  right: var(--content-right);
+  bottom: var(--floor);
+  width: var(--panel-w);
+  height: var(--label-h);
+}
+
+/* Each card fills the slot's height at its own label's proportions. */
+.pack,
+.packShadow,
+.calloutLayer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  aspect-ratio: var(--label-ratio, 0.675);
+}
+
+.pack {
+  overflow: hidden;
+  border-radius: var(--label-r);
+}
+
+.pack::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(to bottom, rgb(255 250 240 / 0.1), transparent 30%, transparent 78%, rgb(0 0 0 / 0.12));
+  box-shadow:
+    inset 0 0 0 1px rgb(255 255 255 / 0.1),
+    inset 0 1px 0 rgb(255 255 255 / 0.18);
+  pointer-events: none;
+}
+
+/*
+ * The shadow is its own layer: the cards are revealed with clip-path, which would clip
+ * a shadow of their own. It fades in with the first flavour and out with the last.
+ */
+.packShadow {
+  border-radius: var(--label-r);
+  box-shadow:
+    0 50px 80px -34px rgb(0 0 0 / 0.75),
+    0 16px 30px -14px rgb(0 0 0 / 0.5),
+    0 0 90px -10px color-mix(in oklab, var(--glow) 18%, transparent);
+  visibility: hidden;
+  opacity: 0;
+}
+
+.packShadow::after {
+  content: '';
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  bottom: -18px;
+  height: 36px;
+  background: radial-gradient(50% 50% at 50% 50%, rgb(0 0 0 / 0.55), transparent 70%);
+}
+
+.packMedia {
+  position: absolute;
+  inset: 0;
+}
+
+.packMedia img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.calloutLayer {
+  pointer-events: none;
+}
+
+.callout {
+  position: absolute;
+  width: 19%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.callout svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.callout circle,
+.callout path {
+  fill: none;
+  stroke: var(--doodh);
+  stroke-width: 2;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Beside the ring, at the end of the leader line, out on the stage. */
+.calloutLabel {
+  position: absolute;
+  right: 146%;
+  top: 50%;
+  translate: 0 -50%;
+  display: grid;
+  width: max-content;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--doodh);
+}
+
+.calloutLabel small {
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--glow);
+}
+
+/*
+ * Premix supply: the five labels fanned out behind the cup, centred on the page. The
+ * fan's base sits a little above the shelf so the lower ends of the middle cards are
+ * hidden by the cup standing in front.
+ */
+.fanSlot {
+  --fan-h: min(35vh, 19.5vw);
+  position: absolute;
+  /* The cards' z-indexes (middle on top) stay inside the fan, so the cup still stands
+     in front of it. */
+  isolation: isolate;
+  left: 50%;
+  bottom: calc(var(--floor) + var(--fan-h) * 0.35);
+  width: 0;
+  height: 0;
+}
+
+.fanSlot > ul {
+  --fan-h: inherit;
+}
+
+/* Centred over the fan, in the space above it. */
+.supplySlot {
+  position: absolute;
+  left: var(--content-left);
+  right: var(--content-right);
+  top: var(--top);
+}
+
+.supplySlot h3 {
+  font-size: min(var(--step-h2), 9vh);
+}
+
+.cupSlot {
+  position: absolute;
+  left: var(--cup-x);
+  bottom: var(--floor);
+  width: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.cup {
+  flex: none;
+  height: min(46vh, 28vw);
+  aspect-ratio: var(--cup-ratio);
+}
+
+.cupInner {
+  position: relative;
+  height: 100%;
+  transform-origin: 50% 100%;
+}
+
+.glass {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  translate: calc(var(--tilt-x, 0) * -14px) calc(var(--tilt-y, 0) * -8px);
+  transition: translate 0.7s var(--ease-out);
+}
+
+/* Both cups stand in the same spot, at their own proportions. */
+.cupModel {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 100%;
+  translate: -50% 0;
+}
+
+.stage [data-cup-model='branded'] {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.steam {
+  left: 26%;
+  right: 26%;
+  bottom: 74%;
+  height: 74%;
+}
+
+.stage:not([data-ready]) .cupSlot {
+  visibility: hidden;
+}
+
+.copyCol {
+  position: absolute;
+  left: var(--content-left);
+  top: var(--top);
+  bottom: calc(var(--floor) + 2vh);
+  width: var(--copy-w);
+}
+
+.copySlot {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.copySlot > * {
+  width: 100%;
+}
+
+/* Flavour copy sits above the giant word standing on the shelf. */
+.copySlot[data-copy] {
+  padding-bottom: 16vh;
+}
+
+/* Hidden until the timeline takes over, so nothing flashes on load. */
+.stage [data-word],
+.stage [data-pack],
+.stage [data-ingredients],
+.stage [data-promise],
+.stage [data-supply],
+.stage [data-fan-item],
+.stage [data-rail],
+.stage [data-ring-label] {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.stage [data-copy] {
+  opacity: 0;
+}
+
+/*
+ * A row of chapter marks in the floor band, under the copy, clear of the cup and the
+ * label panel. Only the current chapter (and one under the pointer or keyboard focus)
+ * shows its name; the others are marks alone, so the row stays short.
+ */
+.rail {
+  position: absolute;
+  left: var(--content-left);
+  bottom: calc(var(--floor) / 2);
+  transform: translateY(50%);
+}
+
+.rail ol {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.rail button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  padding: 0 10px 0 4px;
+  border: 0;
+  background: none;
+  color: var(--cream-muted);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.railLabel {
+  order: 1;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-width 0.4s var(--ease-out),
+    opacity 0.3s;
+}
+
+.railDot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--dot);
+  transform: rotate(45deg);
+  transition:
+    background-color 0.3s,
+    transform 0.3s var(--ease-out);
+}
+
+.rail button:hover .railLabel,
+.rail button:focus-visible .railLabel,
+.rail [aria-current] .railLabel {
+  max-width: 14em;
+  opacity: 1;
+}
+
+.rail [aria-current] {
+  color: var(--doodh);
+}
+
+.rail [aria-current] .railDot {
+  background: var(--dot);
+  transform: rotate(45deg) scale(1.35);
+}
+
+.cue {
+  position: absolute;
+  left: var(--content-left);
+  bottom: calc(var(--floor) / 2);
+  transform: translateY(50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+}
+
+.cue span {
+  position: relative;
+  width: 1px;
+  height: 28px;
+  overflow: hidden;
+  background: rgb(243 234 219 / 0.2);
+}
+
+.cue span::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -40%;
+  width: 1px;
+  height: 40%;
+  background: var(--copper-light);
+  animation: drip 1.8s var(--ease-pour) infinite;
+}
+
+@keyframes drip {
+  to {
+    top: 100%;
+  }
+}

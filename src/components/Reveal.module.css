@@ -1,0 +1,46 @@
+.reveal {
+  transition:
+    opacity 0.9s var(--ease-out) var(--delay, 0ms),
+    transform 0.9s var(--ease-out) var(--delay, 0ms);
+}
+
+.reveal[data-in='false'] {
+  opacity: 0;
+  transform: translateY(26px);
+}
+
+.masked .word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* room for descenders and the italic overhang */
+  padding: 0 0.02em 0.14em;
+  margin: 0 -0.02em -0.14em;
+}
+
+.masked .word > span {
+  display: inline-block;
+  transform: translateY(110%);
+  transition: transform 1s var(--ease-pour);
+  transition-delay: calc(var(--i, 0) * 60ms);
+}
+
+.masked[data-in='true'] .word > span {
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .masked .word > span {
+    transition: none;
+  }
+
+  .reveal[data-in='false'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .masked .word > span {
+    transform: none;
+  }
+}

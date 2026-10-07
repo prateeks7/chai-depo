@@ -1,0 +1,51 @@
+:root {
+  /* Surfaces */
+  --tawa: #17120e; /* warm charcoal, the dark stage */
+  --tawa-2: #211a14;
+  --decoction: #3a2317; /* deep tea brown */
+  --doodh: #f3eadb; /* cream */
+  --doodh-2: #eadfcb;
+  --arch-light: #f7efe1;
+  --arch-edge: #dcc9aa;
+
+  /* Brand accents */
+  --chai: #905238; /* sampled from the chai glass printed on the machine wrap */
+  --leaf: #4e6a3a;
+  --logo-green: #578d39; /* logo only */
+  --jaggery: #b8742f;
+  --masala: #a63a2e;
+  --copper: #b87a4b; /* lines and text on dark only */
+  --copper-light: #d9a574;
+  --copper-deep: #8a5530; /* copper for text on cream */
+
+  /* Text */
+  --ink: #2a1d15;
+  --ink-muted: rgb(42 29 21 / 0.7);
+  --cream-muted: rgb(243 234 219 / 0.7);
+  --rule-dark: rgb(184 122 75 / 0.4);
+  --rule-light: rgb(138 85 48 / 0.3);
+
+  /* Type */
+  --font-display: 'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --font-inline: 'Big Shoulders Inline Display', var(--font-display);
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-body: 'Instrument Sans', system-ui, sans-serif;
+
+  --step-display: clamp(3.4rem, 7.2vw, 8rem);
+  --step-h2: clamp(2.6rem, 5.2vw, 5rem);
+  --step-h3: clamp(1.7rem, 2.4vw, 2.4rem);
+  --step-lead: clamp(1.1rem, 1.35vw, 1.3rem);
+  --step-body: 1.0625rem;
+  --step-small: 0.875rem;
+  --step-eyebrow: 0.8rem;
+
+  /* Layout */
+  --max: 1440px;
+  --gutter: clamp(16px, 3.4vw, 56px);
+  --header-h: 68px;
+  --section-pad: clamp(88px, 12vw, 176px);
+
+  /* Motion */
+  --ease-pour: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}

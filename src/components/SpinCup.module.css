@@ -1,0 +1,30 @@
+.spin {
+  position: relative;
+  aspect-ratio: var(--ratio);
+  filter: drop-shadow(0 12px 16px rgb(20 10 4 / 0.45));
+}
+
+.still,
+.canvas,
+.lid {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The lid only shows over the spinning body; the still cup has its own. */
+.canvas,
+.lid {
+  visibility: hidden;
+}
+
+.spin[data-ready] .canvas,
+.spin[data-ready] .lid {
+  visibility: visible;
+}
+
+.spin[data-ready] .still {
+  visibility: hidden;
+}

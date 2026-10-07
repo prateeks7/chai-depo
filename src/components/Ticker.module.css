@@ -1,0 +1,35 @@
+.ticker {
+  overflow: hidden;
+  padding: clamp(18px, 2.4vw, 34px) 0;
+  border-top: 1px solid var(--rule-dark);
+  border-bottom: 1px solid var(--rule-dark);
+  user-select: none;
+}
+
+.track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.item {
+  flex: none;
+  padding-right: 0.42em;
+  font-family: var(--font-inline);
+  font-size: clamp(2.6rem, 6vw, 6rem);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: color-mix(in oklab, var(--copper-light) 70%, transparent);
+}
+
+.item::after {
+  content: '';
+  display: inline-block;
+  width: 0.14em;
+  height: 0.14em;
+  margin: 0 0 0.22em 0.42em;
+  background: var(--copper);
+  transform: rotate(45deg);
+}

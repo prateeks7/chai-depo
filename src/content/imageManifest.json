@@ -1,0 +1,233 @@
+{
+  "logo": {
+    "widths": [
+      160,
+      320,
+      503
+    ],
+    "width": 503,
+    "height": 496,
+    "ratio": 1.0141
+  },
+  "label-jaggery": {
+    "widths": [
+      360,
+      640,
+      960
+    ],
+    "width": 1200,
+    "height": 1800,
+    "ratio": 0.6667
+  },
+  "machine-hero": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1800
+    ],
+    "width": 2066,
+    "height": 2616,
+    "ratio": 0.7898
+  },
+  "label-cardamom": {
+    "widths": [
+      360,
+      640,
+      960,
+      1400
+    ],
+    "width": 1872,
+    "height": 2772,
+    "ratio": 0.6753
+  },
+  "label-masala": {
+    "widths": [
+      360,
+      640,
+      960,
+      1400
+    ],
+    "width": 1872,
+    "height": 2772,
+    "ratio": 0.6753
+  },
+  "label-karak": {
+    "widths": [
+      360,
+      640,
+      960,
+      1400
+    ],
+    "width": 1872,
+    "height": 2772,
+    "ratio": 0.6753
+  },
+  "label-cardamom-nas": {
+    "widths": [
+      360,
+      640,
+      960,
+      1400
+    ],
+    "width": 1872,
+    "height": 2772,
+    "ratio": 0.6753
+  },
+  "machine-compact": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1800,
+      2600
+    ],
+    "width": 4710,
+    "height": 6148,
+    "ratio": 0.7661
+  },
+  "machine-multi": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1800
+    ],
+    "width": 5065,
+    "height": 5904,
+    "ratio": 0.8579
+  },
+  "machine-high": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1800
+    ],
+    "width": 5166,
+    "height": 5678,
+    "ratio": 0.9098
+  },
+  "machine-compact-studio": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1800,
+      2600
+    ],
+    "width": 5833,
+    "height": 7211,
+    "ratio": 0.8089
+  },
+  "cup-garden": {
+    "widths": [
+      320,
+      480,
+      640,
+      960
+    ],
+    "width": 1207,
+    "height": 1769,
+    "ratio": 0.6823
+  },
+  "machine-multi-outline": {
+    "widths": [
+      480,
+      800,
+      1200,
+      1800
+    ],
+    "width": 2066,
+    "height": 2366,
+    "ratio": 0.8732
+  },
+  "cup-garden-lid": {
+    "widths": [
+      320,
+      480,
+      640,
+      960
+    ],
+    "width": 1207,
+    "height": 1769,
+    "ratio": 0.6823
+  },
+  "cup-branded": {
+    "widths": [
+      320,
+      480,
+      640,
+      960
+    ],
+    "width": 1314,
+    "height": 1972,
+    "ratio": 0.6663
+  },
+  "cup-branded-cardamom": {
+    "widths": [
+      320,
+      480,
+      640,
+      960
+    ],
+    "width": 1314,
+    "height": 1972,
+    "ratio": 0.6663
+  },
+  "cup-branded-cardamom-nas": {
+    "widths": [
+      320,
+      480,
+      640,
+      960
+    ],
+    "width": 1314,
+    "height": 1972,
+    "ratio": 0.6663
+  },
+  "cup-branded-jaggery": {
+    "widths": [
+      320,
+      480,
+      640,
+      960
+    ],
+    "width": 1314,
+    "height": 1972,
+    "ratio": 0.6663
+  },
+  "cup-branded-masala": {
+    "widths": [
+      320,
+      480,
+      640,
+      960
+    ],
+    "width": 1314,
+    "height": 1972,
+    "ratio": 0.6663
+  },
+  "cup-branded-karak": {
+    "widths": [
+      320,
+      480,
+      640,
+      960
+    ],
+    "width": 1314,
+    "height": 1972,
+    "ratio": 0.6663
+  },
+  "cup-branded-lid": {
+    "widths": [
+      320,
+      480,
+      640,
+      960
+    ],
+    "width": 1314,
+    "height": 1972,
+    "ratio": 0.6663
+  }
+}

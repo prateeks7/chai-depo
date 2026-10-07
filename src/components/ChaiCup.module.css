@@ -1,0 +1,12 @@
+.cup {
+  position: relative;
+  aspect-ratio: var(--ratio, 0.66);
+}
+
+.art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgb(20 10 4 / 0.4));
+}

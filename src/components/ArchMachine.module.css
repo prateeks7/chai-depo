@@ -1,0 +1,89 @@
+/*
+ * The machine stands in a lit arch of colour.
+ * --inset: side margin between art and arch, as a share of arch width.
+ * --sink:  share of the art below the machine's feet, pushed under the arch floor.
+ *          Studio photos (build-images.mjs) bake this margin in; trimmed art has none.
+ * --clear: space above the art, so it sits inside the curve rather than touching it.
+ */
+.arch {
+  --inset: 0.02;
+  --sink: 0.06;
+  --clear: 0.2;
+  position: relative;
+  aspect-ratio: 1 / calc((1 - 2 * var(--inset)) * (1 - var(--sink)) / var(--img-ratio) + var(--clear));
+  overflow: hidden;
+  border-radius: 9999px 9999px 0 0;
+}
+
+/* Trimmed art (sketch.mjs): no baked padding, so it needs different constants —
+ * flush to the floor (sink: 0) and more headroom above (clear) to clear the curve. */
+.arch[data-fit='tight'] {
+  --inset: 0.1;
+  --sink: 0;
+  --clear: 0.36;
+}
+
+/* No arch: the box is exactly the art, un-clipped, with nothing behind it. */
+.arch[data-backdrop='false'] {
+  --inset: 0;
+  --sink: 0;
+  --clear: 0;
+  overflow: visible;
+  border-radius: 0;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(72% 44% at 50% 72%, rgb(255 236 200 / 0.55), transparent 72%),
+    radial-gradient(120% 80% at 50% 36%, #efd3a8 0%, #dcb27f 42%, #bb8b55 76%, #976a3c 100%);
+}
+
+/* Contact shadow where the machine meets the floor. */
+.backdrop::after {
+  content: '';
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 0;
+  height: 8%;
+  background: radial-gradient(50% 100% at 50% 100%, rgb(48 26 12 / 0.45), transparent 72%);
+}
+
+.machine {
+  position: absolute;
+  left: calc(var(--inset) * 100%);
+  right: calc(var(--inset) * 100%);
+  bottom: calc(-100% * var(--sink) / (1 - var(--sink) + var(--clear) * var(--img-ratio)));
+}
+
+.img {
+  width: 100%;
+  mix-blend-mode: multiply;
+}
+
+/* Art with real alpha (line art, cutouts): no blend, just a soft contact shadow. */
+.arch[data-blend='none'] .img {
+  mix-blend-mode: normal;
+  filter: drop-shadow(0 14px 18px rgb(30 16 6 / 0.35));
+}
+
+.arch[data-tone='cream'] .backdrop {
+  background: radial-gradient(120% 75% at 50% 36%, var(--arch-light) 0%, #efe3ce 48%, var(--arch-edge) 100%);
+}
+
+.arch[data-tone='cream'] .backdrop::after {
+  background: radial-gradient(50% 100% at 50% 100%, rgb(58 35 23 / 0.32), transparent 72%);
+}
+
+/* Deep, solid brown: a darker field, for art that needs more contrast behind it. */
+.arch[data-tone='brown'] .backdrop {
+  background:
+    radial-gradient(90% 60% at 50% 30%, rgb(217 165 116 / 0.16), transparent 70%),
+    radial-gradient(130% 85% at 50% 32%, #5c3a22 0%, #46280f 55%, #2c1a0c 100%);
+}
+
+.arch[data-tone='brown'] .backdrop::after {
+  background: radial-gradient(50% 100% at 50% 100%, rgb(10 5 2 / 0.6), transparent 72%);
+}

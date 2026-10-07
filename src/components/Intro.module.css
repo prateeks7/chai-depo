@@ -1,0 +1,55 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--tawa);
+  transition: transform 0.75s var(--ease-pour);
+}
+
+.intro[data-phase='out'] {
+  transform: translateY(-101%);
+}
+
+.mark {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  animation: markIn 0.6s var(--ease-out) both;
+}
+
+.mark img {
+  width: 104px;
+  height: auto;
+}
+
+.line {
+  width: 140px;
+  height: 2px;
+  background: rgb(184 122 75 / 0.25);
+  overflow: hidden;
+}
+
+.line::after {
+  content: '';
+  display: block;
+  height: 100%;
+  background: var(--copper-light);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: fill 0.9s var(--ease-pour) 0.15s both;
+}
+
+@keyframes markIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+}
+
+@keyframes fill {
+  to {
+    transform: scaleX(1);
+  }
+}

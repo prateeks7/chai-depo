@@ -1,0 +1,281 @@
+/* Hero */
+.hero {
+  max-width: 620px;
+}
+
+.title {
+  margin-top: 26px;
+  font-family: var(--font-display);
+  font-size: var(--step-display);
+  font-weight: 800;
+  line-height: 0.86;
+  letter-spacing: -0.005em;
+  text-transform: uppercase;
+  color: var(--doodh);
+}
+
+.title > span {
+  display: block;
+}
+
+.title em {
+  display: block;
+  margin-top: 0.1em;
+  font-family: var(--font-serif);
+  font-size: 0.74em;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--copper-light);
+}
+
+.lead {
+  max-width: 36ch;
+  margin-top: 28px;
+  font-size: var(--step-lead);
+  line-height: 1.5;
+  color: var(--cream-muted);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 32px;
+  margin-top: 36px;
+}
+
+.range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 0;
+  margin-top: 44px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+}
+
+.range span:not(:last-child)::after {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  margin: 0 14px 0.2em;
+  background: var(--copper);
+  transform: rotate(45deg);
+}
+
+/* Promises */
+.promises {
+  display: grid;
+}
+
+.promise {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 20px;
+  padding: 22px 0;
+  border-top: 1px solid var(--rule-dark);
+}
+
+.promise:last-child {
+  border-bottom: 1px solid var(--rule-dark);
+}
+
+.promiseNum {
+  grid-row: span 2;
+  padding-top: 0.35em;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--copper-light);
+}
+
+.promiseTitle {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 2.9vw, 2.9rem);
+  font-weight: 800;
+  line-height: 0.95;
+  text-transform: uppercase;
+  color: var(--doodh);
+}
+
+.promiseDetail {
+  margin-top: 8px;
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cream-muted);
+}
+
+/* Flavour */
+.flavour {
+  max-width: 520px;
+}
+
+.name {
+  margin-top: 20px;
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 6.2vw, 6.4rem);
+  font-weight: 800;
+  line-height: 0.86;
+  text-transform: uppercase;
+  color: var(--doodh);
+}
+
+.name em {
+  display: block;
+  margin-top: 0.12em;
+  font-family: var(--font-serif);
+  font-size: 0.44em;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--glow);
+}
+
+.kicker {
+  margin-top: 20px;
+  font-family: var(--font-serif);
+  font-size: clamp(1.25rem, 1.6vw, 1.5rem);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--glow);
+}
+
+.note {
+  max-width: 40ch;
+  margin-top: 14px;
+  color: var(--cream-muted);
+}
+
+.tasting {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 0;
+  margin-top: 26px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--doodh);
+}
+
+.tasting li:not(:last-child)::after {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  margin: 0 14px 0.2em;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.meta span {
+  padding: 6px 12px;
+  border: 1px solid color-mix(in oklab, var(--glow) 45%, transparent);
+  border-radius: 2px;
+  font-size: var(--step-small);
+  color: var(--doodh);
+}
+
+/* Supply */
+.supply {
+  max-width: 520px;
+}
+
+.supplyCentred {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.supplyCentred > :first-child,
+.supplyCentred .actions {
+  justify-content: center;
+}
+
+.supplyCentred .note {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.supplyTitle {
+  margin-top: 20px;
+  font-family: var(--font-display);
+  font-size: var(--step-h2);
+  font-weight: 800;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: var(--doodh);
+}
+
+.supplyTitle em {
+  display: block;
+  margin-top: 0.1em;
+  font-family: var(--font-serif);
+  font-size: 0.62em;
+  font-style: italic;
+  font-weight: 300;
+  text-transform: none;
+  color: var(--copper-light);
+}
+
+/*
+ * The five labels fanned like a hand of cards: every card pivots about one point a card's
+ * height below it, so the tops spread apart and each keeps its brand and flavour name in
+ * view. The middle card sits on top. The container is a zero-size anchor at the fan's
+ * base; place it where the base should be. --open (0..1, default 1) fans them out.
+ */
+.fan {
+  --fan-h: 16vh;
+  --spread: 17deg;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 0;
+}
+
+.fanItem {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: calc(10 - var(--ak));
+  filter: drop-shadow(0 14px 22px rgb(0 0 0 / 0.5));
+}
+
+.fanTilt {
+  transform-origin: 50% calc(100% + var(--fan-h));
+  transform: translateX(-50%) rotate(calc(var(--k) * var(--spread) * var(--open, 1)));
+}
+
+.fanTilt {
+  width: max-content;
+}
+
+/* max-width: none, or the global img reset clamps it to the zero-width anchor. */
+.fanTilt img {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: var(--fan-h);
+  border-radius: 4px;
+}

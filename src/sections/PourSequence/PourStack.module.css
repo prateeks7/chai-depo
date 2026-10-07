@@ -1,0 +1,358 @@
+.inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* Hero */
+.hero {
+  padding: calc(var(--header-h) + clamp(32px, 6vw, 72px)) 0 0;
+  background: var(--tawa);
+}
+
+.heroInner {
+  display: grid;
+  gap: 48px;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.heroVisual {
+  --liquid: #9a6644;
+  --cup: #d9a574;
+  width: min(100%, 440px);
+  justify-self: center;
+}
+
+/*
+ * Phones: the machine sits between the headline and the rest of the copy, so it is
+ * on the first screen. The copy block dissolves (display: contents) so its children
+ * can be ordered around the visual.
+ */
+@media (max-width: 699px) {
+  .heroInner {
+    gap: 28px;
+  }
+
+  .heroInner > :first-child {
+    display: contents;
+  }
+
+  .heroInner > :first-child > * {
+    order: 4;
+    margin-top: 0;
+  }
+
+  .heroInner > :first-child > :nth-child(1) {
+    order: 1;
+  }
+
+  .heroInner > :first-child > :nth-child(2) {
+    order: 2;
+    margin-top: -12px;
+    font-size: clamp(2.9rem, 13vw, 3.6rem);
+  }
+
+  .heroVisual {
+    order: 3;
+    width: min(78%, calc(44svh * 0.66));
+  }
+
+  /* The flavour list repeats the panels below; skip it here. */
+  .heroInner > :first-child > :nth-child(5) {
+    display: none;
+  }
+}
+
+@media (min-width: 700px) {
+  .heroInner {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: end;
+  }
+
+  .heroInner > :first-child {
+    align-self: center;
+    padding-bottom: 48px;
+  }
+}
+
+.trayCup {
+  position: absolute;
+  aspect-ratio: var(--cup-ratio);
+  transform: translateX(-50%);
+}
+
+.traySteam {
+  left: 20%;
+  right: 20%;
+  bottom: 78%;
+  height: 110%;
+}
+
+.glass {
+  width: 100%;
+  height: 100%;
+}
+
+/* Promises */
+.promise {
+  padding: clamp(56px, 9vw, 104px) 0;
+  background: var(--tawa);
+  border-top: 1px solid rgb(184 122 75 / 0.25);
+}
+
+@media (min-width: 900px) {
+  .promise ol {
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 40px;
+  }
+
+  .promise li:last-child {
+    border-bottom: 0;
+  }
+}
+
+/* Flavours */
+.flavours {
+  background: var(--tawa);
+}
+
+.flavoursHead {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(64px, 10vw, 120px) var(--gutter) 40px;
+}
+
+.flavoursTitle {
+  margin-top: 20px;
+  font-family: var(--font-display);
+  font-size: var(--step-h2);
+  font-weight: 800;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.flavoursTitle em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 300;
+  text-transform: none;
+  color: var(--copper-light);
+}
+
+.panel {
+  position: relative;
+  display: grid;
+  gap: 32px;
+  padding: clamp(56px, 9vw, 96px) var(--gutter);
+  overflow: hidden;
+  background: var(--stage);
+  transition:
+    background-color 0.5s,
+    --liquid 0.5s;
+}
+
+.word {
+  position: absolute;
+  top: clamp(24px, 5vw, 56px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-inline);
+  font-size: min(30vw, 260px);
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: color-mix(in oklab, var(--accent) 24%, transparent);
+  pointer-events: none;
+}
+
+.visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 4%;
+  height: min(64vw, 420px);
+  margin-top: clamp(40px, 10vw, 110px);
+}
+
+.field {
+  font-size: min(0.62vw, 4.4px);
+}
+
+.cup {
+  position: relative;
+  height: 62%;
+  aspect-ratio: var(--cup-ratio);
+}
+
+.cupSteam {
+  left: 26%;
+  right: 26%;
+  bottom: 72%;
+  height: 80%;
+}
+
+.packs {
+  position: relative;
+  height: 96%;
+  aspect-ratio: 0.72;
+}
+
+.pack {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  transition: opacity 0.4s;
+}
+
+.pack img {
+  filter: drop-shadow(0 18px 26px rgb(0 0 0 / 0.5));
+}
+
+.pack[data-active='false'] {
+  opacity: 0;
+}
+
+.pack img {
+  max-height: 100%;
+  width: auto;
+}
+
+.shelf {
+  position: absolute;
+  left: calc(var(--gutter) * -1);
+  right: calc(var(--gutter) * -1);
+  bottom: -1px;
+  height: 5px;
+  border-top: 1px solid color-mix(in oklab, var(--accent) 50%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+.copy {
+  position: relative;
+  max-width: 560px;
+}
+
+@media (min-width: 900px) {
+  .panel {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    max-width: none;
+  }
+
+  .visual {
+    order: 2;
+    height: min(40vw, 480px);
+  }
+
+  .field {
+    font-size: 0.42vw;
+  }
+}
+
+/* Cardamom sweetness switch */
+.switch {
+  display: inline-flex;
+  margin-bottom: 28px;
+  border: 1px solid color-mix(in oklab, var(--glow) 45%, transparent);
+  border-radius: 2px;
+}
+
+.switch button {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  background: none;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+}
+
+.switch button[aria-checked='true'] {
+  background: var(--glow);
+  color: var(--tawa);
+}
+
+/* Supply */
+.supply {
+  display: grid;
+  justify-items: center;
+  gap: 40px;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: clamp(72px, 10vw, 120px) var(--gutter);
+}
+
+/* The labels fanned out behind the cup, as on the desktop stage. */
+.supplyVisual {
+  --fan-h: min(34vw, 240px);
+  position: relative;
+  width: 100%;
+  height: calc(var(--fan-h) * 1.55);
+}
+
+.fan {
+  --fan-h: inherit;
+  --spread: 15deg;
+  isolation: isolate;
+  bottom: calc(var(--fan-h) * 0.32);
+}
+
+.supplyCup {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  z-index: 20;
+  height: calc(var(--fan-h) * 0.85);
+  aspect-ratio: var(--cup-ratio);
+  translate: -50% 0;
+}
+
+/*
+ * Light reveals (compact mode only). The packs blend onto the panel colour, so the
+ * reveal moves the pack itself: animating a parent would isolate the blend.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .panel .copy,
+  .panel .cup,
+  .supply > :not(.fan) {
+    transition:
+      opacity 0.8s var(--ease-out),
+      transform 0.8s var(--ease-out);
+  }
+
+  .panel .pack,
+  .fan > li {
+    transition:
+      opacity 0.8s var(--ease-out),
+      translate 0.8s var(--ease-out);
+  }
+
+  .panel[data-in='false'] .copy,
+  .supply[data-in='false'] > :not(.fan) {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  .panel[data-in='false'] .cup {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .panel[data-in='false'] .pack,
+  .supply[data-in='false'] .fan > li {
+    opacity: 0;
+    translate: 0 48px;
+  }
+}

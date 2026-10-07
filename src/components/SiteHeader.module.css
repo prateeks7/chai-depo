@@ -1,0 +1,134 @@
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  height: var(--header-h);
+  background: var(--tawa);
+  border-bottom: 1px solid rgb(184 122 75 / 0.22);
+  transition:
+    background-color 0.5s var(--ease-out),
+    border-color 0.5s;
+}
+
+/* Fills as the page is read. */
+.header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 2px;
+  width: 100%;
+  background: var(--copper);
+  transform: scaleX(var(--scroll-progress, 0));
+  transform-origin: left;
+}
+
+.header[data-light='true'] {
+  background: var(--doodh);
+  border-bottom-color: rgb(138 85 48 / 0.22);
+}
+
+.header[data-light='true'] .nav a {
+  color: var(--ink-muted);
+}
+
+.header[data-light='true'] .nav a:hover {
+  color: var(--ink);
+}
+
+.header[data-light='true'] .cta {
+  background: var(--ink);
+  color: var(--doodh);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header {
+    transition: none;
+  }
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  height: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.logo {
+  display: block;
+  flex: none;
+}
+
+.logo img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.nav {
+  margin-left: auto;
+}
+
+.nav ul {
+  display: flex;
+  gap: 32px;
+}
+
+.nav a {
+  position: relative;
+  display: inline-block;
+  padding: 10px 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--cream-muted);
+  transition: color 0.25s;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  height: 1px;
+  background: var(--copper);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.nav a:hover {
+  color: var(--doodh);
+}
+
+.nav a:hover::after {
+  transform: scaleX(1);
+}
+
+.cta {
+  min-height: 42px;
+  padding: 0 18px;
+  font-size: 0.98rem;
+}
+
+@media (max-width: 760px) {
+  .nav {
+    display: none;
+  }
+
+  .cta {
+    margin-left: auto;
+  }
+
+  .logo img {
+    width: 44px;
+    height: 44px;
+  }
+}
