@@ -166,10 +166,24 @@ export function SpinCup({ model, state, recolour = false, className, data }: Spi
     gl.uniform1i(u('uMask'), 1);
     const uTurn = u('uTurn'), uTint = u('uTint'), uAmount = u('uAmount'), uPx = u('uPx');
 
+    // The canvas is resized from a ResizeObserver, never measured per frame: reading
+    // clientWidth on every tick forces a layout, and with a cup on screen that is a
+    // layout per frame, per cup.
+    let cssWidth = 0;
+    let cssHeight = 0;
+    const observer = new ResizeObserver(([entry]) => {
+      const box = entry.contentBoxSize?.[0];
+      cssWidth = box ? box.inlineSize : entry.contentRect.width;
+      cssHeight = box ? box.blockSize : entry.contentRect.height;
+      size();
+      draw();
+    });
+    observer.observe(host);
+
     const size = () => {
       const dpr = Math.min(2, window.devicePixelRatio || 1);
-      const w = Math.max(1, Math.round(host.clientWidth * dpr));
-      const h = Math.max(1, Math.round(host.clientHeight * dpr));
+      const w = Math.max(1, Math.round(cssWidth * dpr));
+      const h = Math.max(1, Math.round(cssHeight * dpr));
       if (el.width !== w || el.height !== h) {
         el.width = w;
         el.height = h;
@@ -180,8 +194,7 @@ export function SpinCup({ model, state, recolour = false, className, data }: Spi
     };
 
     const draw = () => {
-      if (!ready) return;
-      size();
+      if (!ready || !el.width) return;
       const amount = recolour ? state.amount : 0;
       const key = `${state.turn.toFixed(4)}|${state.r.toFixed(3)}|${state.g.toFixed(3)}|${state.b.toFixed(3)}|${amount.toFixed(3)}|${el.width}`;
       if (key === last) return;
@@ -210,7 +223,12 @@ export function SpinCup({ model, state, recolour = false, className, data }: Spi
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     };
 
-    Promise.all([loadImage(staticImageUrl(`cup-${model}-wrap.webp`)), loadImage(staticImageUrl(`cup-${model}-mask.png`))])
+    // Phones get the smaller strip: a quarter of the pixels to decode and upload.
+    const small = window.matchMedia('(max-width: 899px)').matches;
+    Promise.all([
+      loadImage(staticImageUrl(`cup-${model}-wrap${small ? '-sm' : ''}.webp`)),
+      loadImage(staticImageUrl(`cup-${model}-mask.png`)),
+    ])
       .then(([wrap, mask]) => {
         if (disposed) return;
         texture(0, wrap, gl.RGB);
@@ -230,6 +248,7 @@ export function SpinCup({ model, state, recolour = false, className, data }: Spi
       // Free what this effect made, but never lose the context itself: the canvas outlives
       // the effect (React runs effects twice in development), and getContext() on it
       // would hand the next run the same, dead context.
+      observer.disconnect();
       textures.forEach((t) => gl.deleteTexture(t));
       gl.deleteBuffer(buf);
       gl.deleteProgram(prog);

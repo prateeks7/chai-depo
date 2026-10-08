@@ -1,13 +1,15 @@
-import { useState, type CSSProperties, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { ArchMachine } from '../../components/ArchMachine';
 import { ChaiCup } from '../../components/ChaiCup';
 import { Eyebrow } from '../../components/Eyebrow';
 import { IngredientField } from '../../components/Ingredients';
 import { Picture } from '../../components/Picture';
+import { SpinCup, type SpinState } from '../../components/SpinCup';
 import { Steam } from '../../components/Steam';
 import { FLAVOUR_GROUPS, type Flavour } from '../../content/flavours';
 import { images } from '../../content/images';
 import { CUP_ON_TRAY } from '../../content/machines';
+import { gsap, useGSAP } from '../../lib/gsap';
 import { useInView } from '../../lib/useInView';
 import { FlavourCopy, HeroCopy, PackFan, PromiseList, SupplyCopy } from './PourCopy';
 import s from './PourStack.module.css';
@@ -22,9 +24,16 @@ const paletteVars = (f: Flavour) =>
   }) as CSSProperties;
 
 const cupRatio = { '--cup-ratio': images['cup-garden'].ratio } as CSSProperties;
+const flavourCupRatio = { '--cup-ratio': images['cup-branded'].ratio } as CSSProperties;
+
+const rgb01 = (hex: string) => ({
+  r: parseInt(hex.slice(1, 3), 16) / 255,
+  g: parseInt(hex.slice(3, 5), 16) / 255,
+  b: parseInt(hex.slice(5, 7), 16) / 255,
+});
 
 /** Phones, tablets, short screens and reduced motion: the same story, stacked. */
-export function PourStack() {
+export function PourStack({ motion = true }: { motion?: boolean }) {
   return (
     <>
       <section id="top" className={s.hero}>
@@ -69,31 +78,75 @@ export function PourStack() {
           </h2>
         </header>
         {FLAVOUR_GROUPS.map((group, i) => (
-          <FlavourPanel key={group[0].id} group={group} seed={i} />
+          <FlavourPanel key={group[0].id} group={group} seed={i} motion={motion} />
         ))}
-        <SupplyPanel />
+        <SupplyPanel motion={motion} />
       </section>
     </>
   );
 }
 
-function FlavourPanel({ group, seed }: { group: Flavour[]; seed: number }) {
+function FlavourPanel({ group, seed, motion }: { group: Flavour[]; seed: number; motion: boolean }) {
   const [active, setActive] = useState(0);
   const [ref, inView] = useInView<HTMLElement>();
+  // Mounted a screen early and dropped a screen late: the cup is a WebGL canvas, and
+  // only the panels near the viewport should hold one.
+  const [nearRef, near] = useInView<HTMLDivElement>({ once: false, rootMargin: '100% 0px' });
+  const panel = useRef<HTMLElement | null>(null);
   const f = group[active];
+  const spins = motion && near;
+
+  // One turn and one colour for this panel's cup, animated by the scroll below.
+  const [cup] = useState<SpinState>(() => ({ turn: 0, ...rgb01(f.palette.cup), amount: 1 }));
+  useEffect(() => {
+    Object.assign(cup, rgb01(f.palette.cup));
+  }, [cup, f.palette.cup]);
+
+  // The panel's own scroll-scrubbed motion: the cup turns, the word drifts against it,
+  // the label rises and settles. The desktop scene does this on a pinned timeline; here
+  // it plays as the panel crosses the screen.
+  useGSAP(
+    () => {
+      if (!motion || !panel.current) return;
+      const scrollTrigger = { trigger: panel.current, start: 'top bottom', end: 'bottom top', scrub: 0.6 };
+      // A full turn, keyed to the cup rather than the panel, so the logo comes round to
+      // face front exactly as the cup reaches the middle of the screen.
+      gsap.fromTo(
+        cup,
+        { turn: -Math.PI },
+        { turn: Math.PI, ease: 'none', scrollTrigger: { trigger: nearRef.current, start: 'top bottom', end: 'bottom top', scrub: 0.6 } },
+      );
+      gsap.fromTo('[data-word]', { yPercent: 14 }, { yPercent: -14, ease: 'none', scrollTrigger });
+      gsap.fromTo('[data-label]', { yPercent: 10, rotate: 2.4 }, { yPercent: -6, rotate: -1.6, ease: 'none', scrollTrigger });
+    },
+    { scope: panel, dependencies: [motion] },
+  );
 
   return (
-    <article ref={ref} className={s.panel} data-in={inView} style={paletteVars(f)} aria-labelledby={`flavour-${group[0].id}`}>
-      <span className={s.word} aria-hidden="true">
+    <article
+      ref={(el) => {
+        ref.current = el;
+        panel.current = el;
+      }}
+      className={s.panel}
+      data-in={inView}
+      style={paletteVars(f)}
+      aria-labelledby={`flavour-${group[0].id}`}
+    >
+      <span className={s.word} data-word aria-hidden="true">
         {f.name}
       </span>
-      <div className={s.visual}>
+      <div ref={nearRef} className={s.visual}>
         <IngredientField kinds={f.ingredients} depth="mid" seed={seed} color={f.palette.glow} className={s.field} count={4} />
-        <div className={s.cup} style={cupRatio}>
+        <div className={s.cup} style={flavourCupRatio}>
           <Steam className={s.cupSteam} />
-          <ChaiCup className={s.glass} flavour={f.id} />
+          {spins ? (
+            <SpinCup model="branded" state={cup} recolour className={s.glass} />
+          ) : (
+            <ChaiCup className={s.glass} flavour={f.id} />
+          )}
         </div>
-        <div className={s.packs}>
+        <div className={s.packs} data-label>
           {group.map((g, i) => (
             <div key={g.id} className={s.pack} data-active={i === active} aria-hidden={i !== active}>
               <Picture name={g.pack} alt={g.packAlt} sizes="(min-width: 700px) 30vw, 42vw" />
@@ -131,14 +184,40 @@ function SweetnessSwitch({ options, active, onChange }: { options: Flavour[]; ac
   );
 }
 
-function SupplyPanel() {
+function SupplyPanel({ motion }: { motion: boolean }) {
   const [ref, inView] = useInView<HTMLDivElement>();
+  const [nearRef, near] = useInView<HTMLDivElement>({ once: false, rootMargin: '100% 0px' });
+  const panel = useRef<HTMLDivElement | null>(null);
+  const [cup] = useState<SpinState>(() => ({ turn: 0, r: 1, g: 1, b: 1, amount: 0 }));
+
+  useGSAP(
+    () => {
+      if (!motion || !panel.current) return;
+      const scrollTrigger = { trigger: panel.current, start: 'top bottom', end: 'bottom top', scrub: 0.6 };
+      gsap.fromTo(
+        cup,
+        { turn: -Math.PI },
+        { turn: Math.PI, ease: 'none', scrollTrigger: { trigger: nearRef.current, start: 'top bottom', end: 'bottom top', scrub: 0.6 } },
+      );
+      // The five labels fan out behind the cup, as they do on the desktop stage.
+      gsap.fromTo('[data-fan]', { '--open': 0.25 }, { '--open': 1, ease: 'none', scrollTrigger });
+    },
+    { scope: panel, dependencies: [motion] },
+  );
+
   return (
-    <div ref={ref} className={s.supply} data-in={inView}>
-      <div className={s.supplyVisual}>
+    <div
+      ref={(el) => {
+        ref.current = el;
+        panel.current = el;
+      }}
+      className={s.supply}
+      data-in={inView}
+    >
+      <div ref={nearRef} className={s.supplyVisual} data-fan>
         <PackFan className={s.fan} />
         <div className={s.supplyCup} style={cupRatio}>
-          <ChaiCup className={s.glass} />
+          {motion && near ? <SpinCup model="garden" state={cup} className={s.glass} /> : <ChaiCup className={s.glass} />}
         </div>
       </div>
       <SupplyCopy centred />

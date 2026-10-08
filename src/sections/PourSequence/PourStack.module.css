@@ -153,18 +153,21 @@
     --liquid 0.5s;
 }
 
+/*
+ * The flavour's name, huge, on its own band: the cup tucks in front of its lower edge
+ * for depth (as on the desktop stage) but the label never crosses it.
+ */
 .word {
-  position: absolute;
-  top: clamp(24px, 5vw, 56px);
-  left: 50%;
-  transform: translateX(-50%);
+  display: block;
+  margin: 0 auto;
   font-family: var(--font-inline);
-  font-size: min(30vw, 260px);
+  font-size: min(25vw, 220px);
   font-weight: 700;
-  line-height: 1;
+  line-height: 0.82;
+  text-align: center;
   text-transform: uppercase;
   white-space: nowrap;
-  color: color-mix(in oklab, var(--accent) 24%, transparent);
+  color: color-mix(in oklab, var(--accent) 26%, transparent);
   pointer-events: none;
 }
 
@@ -173,18 +176,20 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 4%;
-  height: min(64vw, 420px);
-  margin-top: clamp(40px, 10vw, 110px);
+  gap: 5%;
+  height: min(62vw, 400px);
+  /* Pulled up so the cup, which stands taller than this row, overlaps the word's feet. */
+  margin-top: clamp(-18px, -3vw, -8px);
 }
 
 .field {
   font-size: min(0.62vw, 4.4px);
 }
 
+/* Taller than the row, so it rises in front of the word. */
 .cup {
   position: relative;
-  height: 62%;
+  height: 112%;
   aspect-ratio: var(--cup-ratio);
 }
 
@@ -195,10 +200,11 @@
   height: 80%;
 }
 
+/* Shorter than the cup, so its top edge stays below the word. */
 .packs {
   position: relative;
-  height: 96%;
-  aspect-ratio: 0.72;
+  height: 82%;
+  aspect-ratio: 0.675;
 }
 
 .pack {
@@ -211,7 +217,10 @@
 }
 
 .pack img {
-  filter: drop-shadow(0 18px 26px rgb(0 0 0 / 0.5));
+  border-radius: 6px;
+  box-shadow:
+    0 26px 40px -16px rgb(0 0 0 / 0.75),
+    0 0 0 1px rgb(255 255 255 / 0.08);
 }
 
 .pack[data-active='false'] {

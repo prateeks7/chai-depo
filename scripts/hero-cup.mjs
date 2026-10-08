@@ -494,6 +494,12 @@ for (const [name, M] of Object.entries(MODELS)) {
     }
   }
   await sharp(wrap, { raw: { width: WRAP_W, height: WRAP_H, channels: 3 } }).webp({ quality: 90 }).toFile(path.join(OUT, `cup-${name}-wrap.webp`));
+  // A quarter-size strip for phones: the cup is barely 180px wide there, and uploading
+  // the full one costs a visible stall when a panel's cup comes into view.
+  await sharp(wrap, { raw: { width: WRAP_W, height: WRAP_H, channels: 3 } })
+    .resize(WRAP_W / 2, WRAP_H / 2)
+    .webp({ quality: 88 })
+    .toFile(path.join(OUT, `cup-${name}-wrap-sm.webp`));
   await sharp(mask, { raw: { width: WRAP_W, height: WRAP_H, channels: 1 } })
     .resize(512, 256)
     .toColourspace('b-w')
