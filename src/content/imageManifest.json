@@ -240,5 +240,16 @@
     "width": 1314,
     "height": 1972,
     "ratio": 0.6663
+  },
+  "label-coffee": {
+    "widths": [
+      360,
+      640,
+      960,
+      1400
+    ],
+    "width": 1872,
+    "height": 2772,
+    "ratio": 0.6753
   }
 }

@@ -17,8 +17,10 @@ const REVISED = path.resolve(root, '../asset/CHAI_DEPOT_PREMIX_MARCH_REVISED.pdf
 const JAGGERY = path.resolve(root, '../finalized asset/CHAI_DEPOT_PREMIX_JAGGERY_4x6.pdf');
 const WIDTHS = [360, 640, 960, 1400];
 
-// Page order in the revised file. Page 1 is a COFFEE label: out of scope for this site.
+// Page order in the revised file. Page 6 is a no-added-sugar Karak, which the site does
+// not show yet.
 const JOBS = [
+  { key: 'label-coffee', pdf: REVISED, page: 1 },
   { key: 'label-cardamom', pdf: REVISED, page: 2 },
   { key: 'label-masala', pdf: REVISED, page: 3 },
   { key: 'label-karak', pdf: REVISED, page: 4 },

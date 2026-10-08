@@ -108,14 +108,14 @@ export const FLAVOURS: Flavour[] = [
     name: 'Coffee',
     title: 'Indian Style Coffee',
     kicker: 'Rich and milky',
-    note: 'Indian-style coffee premix, poured from the same machine as the chai.',
-    tasting: ['Rich coffee', 'Milky and smooth', 'One-press pour'],
-    // No pack artwork yet: the panel shows an empty label plate until the client sends it.
-    packAlt: 'Chai Depot Indian Style Coffee premix, 2 lb vending pack',
-    palette: { stage: '#1a120d', accent: '#b07a4a', glow: '#dbab78', liquid: '#6b4428', cup: '#7a4a2a', label: '#7a4a2a', steam: 0.85 },
+    note: 'Instant coffee premix, rich and milky, poured from the same machine as the chai. Just add hot water.',
+    tasting: ['Rich instant coffee', 'Milky and smooth', 'Just add hot water'],
+    pack: 'label-coffee',
+    packAlt: 'Chai Depot Instant Coffee premix label, 2 lb vending pack',
+    palette: { stage: '#1d1009', accent: '#c2703c', glow: '#e6a86a', liquid: '#6b4428', cup: '#a6542b', label: '#a6542b', steam: 0.85 },
     ingredients: ['seeds', 'leaf', 'seeds', 'cinnamon', 'seeds'],
     verified: false,
-    todo: 'Awaiting the Indian Style Coffee label artwork, tasting notes and pack size.',
+    todo: 'Copy is read off the March label; tasting notes not yet supplied by the client.',
   },
 ];
 

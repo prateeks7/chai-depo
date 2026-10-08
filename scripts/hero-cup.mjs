@@ -32,7 +32,7 @@ const TINTS = {
   cardamom: '#92a452',
   'cardamom-nas': '#b8c088',
   karak: '#c9a228',
-  coffee: '#7a4a2a',
+  coffee: '#a6542b',
 };
 
 /**
