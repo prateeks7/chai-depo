@@ -59,8 +59,15 @@ export function Lineup() {
     setActive(next);
     if (focusTab) tabs.current[next]?.focus();
   };
-  // -1, 0 or 1: to the left, centre stage, to the right (three machines, so it wraps).
-  const place = (i: number) => ((i - active + n + 1) % n) - 1;
+  // -1, 0 or 1: to the left, centre stage, to the right. Anything further round the
+  // carousel gets 2 and waits out of sight until it is a neighbour.
+  const place = (i: number) => {
+    const step = (i - active + n) % n;
+    if (step === 0) return 0;
+    if (step === 1) return 1;
+    if (step === n - 1) return -1;
+    return 2;
+  };
 
   const onTabKey = (e: KeyboardEvent) => {
     const step = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
@@ -89,13 +96,13 @@ export function Lineup() {
         <header className={s.head}>
           <Eyebrow tone="light">The machines</Eyebrow>
           <h2 id="machines-title" className={s.title}>
-            <MaskedText text="Three sizes." />
+            <MaskedText text="Four sizes." />
             <em>
-              <MaskedText text="One proper cup." start={2} />
+              <MaskedText text="More ways to serve." start={2} />
             </em>
           </h2>
           <Reveal as="p" className={s.lead} delay={220}>
-            From a front desk to a warehouse floor, pick the machine that fits the way your people take their chai.
+            From a small office to a busy workplace, choose the machine that fits your space, volume and beverage needs.
           </Reveal>
         </header>
 
@@ -164,9 +171,16 @@ export function Lineup() {
 
             <div key={m.id} id="machine-panel" role="tabpanel" aria-labelledby={`machine-tab-${m.id}`} className={s.panel}>
               <p className={s.count}>
-                <span>{m.count}</span> selections
+                {m.upTo && <em>Up to</em>}
+                <span>{m.count}</span> beverages
               </p>
-              <h3 className={s.name}>{m.name}</h3>
+              <h3 className={s.name}>
+                <span className={s.rank}>{String(MACHINES.indexOf(m) + 1).padStart(2, '0')}</span>
+                {m.name}
+              </h3>
+              <p className={s.canisters}>
+                {m.canisters} · {m.selections}
+              </p>
               <p className={s.suits}>{m.suits}</p>
               <ul className={s.controls} aria-label={`${m.name} controls`}>
                 {m.controls.map((c) => (
@@ -180,7 +194,7 @@ export function Lineup() {
           </div>
         </div>
 
-        <p className={s.footnote}>Photos are not to scale. Selections are read from each machine’s panel; full specifications come with your quote.</p>
+        <p className={s.footnote}>Photos are not to scale and are being updated to match each canister count. Full specifications come with your quote.</p>
       </div>
     </section>
   );

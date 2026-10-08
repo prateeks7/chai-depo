@@ -11,7 +11,7 @@ import { images } from '../../content/images';
 import { CUP_ON_TRAY } from '../../content/machines';
 import { gsap, useGSAP } from '../../lib/gsap';
 import { useInView } from '../../lib/useInView';
-import { FlavourCopy, HeroCopy, PackFan, PromiseList, SupplyCopy } from './PourCopy';
+import { FlavourCopy, HeroCopy, PackFan, PackPlaceholder, PromiseList, SupplyCopy } from './PourCopy';
 import s from './PourStack.module.css';
 
 const paletteVars = (f: Flavour) =>
@@ -149,7 +149,7 @@ function FlavourPanel({ group, seed, motion }: { group: Flavour[]; seed: number;
         <div className={s.packs} data-label>
           {group.map((g, i) => (
             <div key={g.id} className={s.pack} data-active={i === active} aria-hidden={i !== active}>
-              <Picture name={g.pack} alt={g.packAlt} sizes="(min-width: 700px) 30vw, 42vw" />
+              {g.pack ? <Picture name={g.pack} alt={g.packAlt} sizes="(min-width: 700px) 30vw, 42vw" /> : <PackPlaceholder name={g.name} />}
             </div>
           ))}
         </div>

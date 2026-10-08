@@ -17,11 +17,14 @@ export function WherePours() {
         <header className={s.head}>
           <Eyebrow>Where it pours</Eyebrow>
           <h2 id="where-title" className={s.title}>
-            <MaskedText text="Anywhere people" />
+            <MaskedText text="Wherever people" />
             <em>
               <MaskedText text="need a proper cup." start={2} />
             </em>
           </h2>
+          <p className={s.lead}>
+            From the office break room to a busy hotel lobby, our machines make quality hot beverages simple, consistent and available on demand.
+          </p>
         </header>
         <ul ref={listRef} className={s.list} data-in={listIn}>
           {USE_CASES.map((u, i) => (
@@ -30,6 +33,7 @@ export function WherePours() {
                 <span className={s.index}>{String(i + 1).padStart(2, '0')}</span>
                 <span className={s.name}>{u.name}</span>
                 <span className={s.line} id={`use-${u.id}`}>
+                  <strong>{u.headline}</strong>
                   {u.line}
                 </span>
                 <span className={s.action} aria-hidden="true">

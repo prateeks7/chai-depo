@@ -31,9 +31,20 @@
   color: var(--copper-light);
 }
 
+/* The one-line claim that sits directly under the headline. */
+.sub {
+  max-width: 30ch;
+  margin-top: 22px;
+  font-family: var(--font-serif);
+  font-size: var(--step-lead);
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--copper-light);
+}
+
 .lead {
-  max-width: 36ch;
-  margin-top: 28px;
+  max-width: 40ch;
+  margin-top: 16px;
   font-size: var(--step-lead);
   line-height: 1.5;
   color: var(--cream-muted);
@@ -278,4 +289,37 @@
   max-width: none;
   height: var(--fan-h);
   border-radius: 4px;
+}
+
+/*
+ * A label plate with no artwork yet (see PackPlaceholder). It keeps the pack's footprint
+ * so the fan and the flavour panels do not reflow when the real label lands.
+ */
+.packBlank {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10% 8%;
+  border: 1px dashed rgb(255 255 255 / 0.22);
+  border-radius: 6px;
+  background: linear-gradient(170deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.02));
+  text-align: center;
+}
+
+.packBlank span {
+  font-family: var(--font-display);
+  font-size: clamp(0.85rem, 1.6cqw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cream-muted);
+}
+
+.packBlank small {
+  font-size: 0.62em;
+  letter-spacing: 0.08em;
+  color: rgb(255 255 255 / 0.4);
 }

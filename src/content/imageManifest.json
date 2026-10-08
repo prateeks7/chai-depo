@@ -229,5 +229,16 @@
     "width": 1314,
     "height": 1972,
     "ratio": 0.6663
+  },
+  "cup-branded-coffee": {
+    "widths": [
+      320,
+      480,
+      640,
+      960
+    ],
+    "width": 1314,
+    "height": 1972,
+    "ratio": 0.6663
   }
 }

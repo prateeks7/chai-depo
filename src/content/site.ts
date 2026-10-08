@@ -19,7 +19,7 @@ export const nav = [
 // Three statements shown while the cup travels from the machine to centre stage.
 // Each is grounded in a control that is visible on the compact machine.
 export const promises = [
-  { title: 'Same taste, every cup.', detail: 'Premix and hot water, measured by the machine.' },
-  { title: 'One press. No kettle.', detail: 'Choose 1, 2 or 3, or a half cup.' },
-  { title: 'Rinse, and it’s ready again.', detail: 'Rinse and hot water buttons built in.' },
+  { title: 'Same taste, every cup.', detail: 'Precisely measured premix and hot water, every time.' },
+  { title: 'One press. No kettle.', detail: 'Choose a full, half, or custom serving at the touch of a button.' },
+  { title: 'Rinse. Reset. Ready.', detail: 'Built-in rinse and hot-water functions keep the machine ready for the next cup.' },
 ] as const;

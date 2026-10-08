@@ -1,12 +1,14 @@
 import type { ImageKey } from './images';
 import type { IngredientKind } from '../components/Ingredients';
 
-export type FlavourId = 'cardamom' | 'cardamom-nas' | 'jaggery' | 'masala' | 'karak';
+export type FlavourId = 'masala' | 'jaggery' | 'cardamom' | 'cardamom-nas' | 'karak' | 'coffee';
 
 export interface Flavour {
   id: FlavourId;
-  /** Name as printed on the pack. */
+  /** Short name, used for the giant word behind the cup and in lists. */
   name: string;
+  /** Full name as the client writes it, when it is longer than the word above. */
+  title?: string;
   /** Sub-variant within a family, e.g. the no-added-sugar cardamom. */
   variant?: string;
   family?: 'cardamom';
@@ -15,7 +17,8 @@ export interface Flavour {
   tasting: [string, string, string];
   /** Printed badge on the real pack, shown with a ring callout. */
   badge?: { label: string; at: { x: number; y: number } };
-  pack: ImageKey;
+  /** The label artwork. Absent while the client is still preparing it. */
+  pack?: ImageKey;
   packAlt: string;
   /**
    * cup:   the cup's print is graded toward this (scripts/hero-cup.mjs bakes the same
@@ -29,8 +32,35 @@ export interface Flavour {
   todo?: string;
 }
 
-// Ordered delicate -> bold so the stage colour builds with the chai.
+// Client's running order: Masala, Jaggery, Cardamom, Cardamom no sugar, Karak, Indian
+// Style Coffee. Every list on the site reads from this array, so the order is set here.
 export const FLAVOURS: Flavour[] = [
+  {
+    id: 'masala',
+    name: 'Masala',
+    kicker: 'Spiced and aromatic',
+    note: 'Authentic Indian-style chai with a rich blend of traditional spices. Smooth, creamy and aromatic at any time of day.',
+    tasting: ['Traditional spices', 'Smooth and creamy', 'Aromatic'],
+    pack: 'label-masala',
+    packAlt: 'Chai Depot Masala instant tea premix label, 2 lb vending pack',
+    palette: { stage: '#2a120f', accent: '#c4543e', glow: '#eb9a7c', liquid: '#96593a', cup: '#ad2622', label: '#ad2622', steam: 0.8 },
+    ingredients: ['cinnamon', 'clove', 'ginger', 'pod', 'clove', 'cinnamon'],
+    verified: true,
+  },
+  {
+    id: 'jaggery',
+    name: 'Jaggery',
+    title: 'Jaggery Chai',
+    kicker: 'Naturally sweetened with jaggery',
+    note: 'A rich, aromatic cardamom chai sweetened with traditional jaggery. Smooth, warming, and full of comforting spice.',
+    tasting: ['Sweetened with jaggery', 'Aromatic cardamom', 'Smooth, rich flavour'],
+    pack: 'label-jaggery',
+    packAlt: 'Chai Depot Jaggery instant tea premix label, 2 lb vending pack',
+    palette: { stage: '#26180d', accent: '#d08a3c', glow: '#ebb872', liquid: '#a4693c', cup: '#a96830', label: '#a96830', steam: 0.75 },
+    ingredients: ['jaggery', 'pod', 'jaggery', 'seeds', 'jaggery', 'pod'],
+    verified: true,
+    todo: 'The 4x6 label lists no jaggery in its ingredients and shows Sugar 0.00 g.',
+  },
   {
     id: 'cardamom',
     name: 'Cardamom',
@@ -61,31 +91,6 @@ export const FLAVOURS: Flavour[] = [
     verified: true,
   },
   {
-    id: 'jaggery',
-    name: 'Jaggery',
-    kicker: 'Cardamom, sweetened with jaggery',
-    note: 'Cardamom chai sweetened with jaggery. Warm, round and comforting: a gentler alternative to regular sugar.',
-    tasting: ['Jaggery sweetness', 'Rich cardamom', 'Smooth and comforting'],
-    pack: 'label-jaggery',
-    packAlt: 'Chai Depot Jaggery instant tea premix label, 2 lb vending pack',
-    palette: { stage: '#26180d', accent: '#d08a3c', glow: '#ebb872', liquid: '#a4693c', cup: '#a96830', label: '#a96830', steam: 0.75 },
-    ingredients: ['jaggery', 'pod', 'jaggery', 'seeds', 'jaggery', 'pod'],
-    verified: false,
-    todo: 'The 4x6 label lists no jaggery in its ingredients and shows Sugar 0.00 g.',
-  },
-  {
-    id: 'masala',
-    name: 'Masala',
-    kicker: 'Spiced and aromatic',
-    note: 'Authentic Indian-style chai with a rich blend of traditional spices. Smooth, creamy and aromatic at any time of day.',
-    tasting: ['Traditional spices', 'Smooth and creamy', 'Aromatic'],
-    pack: 'label-masala',
-    packAlt: 'Chai Depot Masala instant tea premix label, 2 lb vending pack',
-    palette: { stage: '#2a120f', accent: '#c4543e', glow: '#eb9a7c', liquid: '#96593a', cup: '#ad2622', label: '#ad2622', steam: 0.8 },
-    ingredients: ['cinnamon', 'clove', 'ginger', 'pod', 'clove', 'cinnamon'],
-    verified: true,
-  },
-  {
     id: 'karak',
     name: 'Karak',
     kicker: 'Strong and full-bodied',
@@ -98,10 +103,32 @@ export const FLAVOURS: Flavour[] = [
     verified: false,
     todo: 'Revised artwork has both a plain Karak and a no-added-sugar Karak; the site shows only the plain one.',
   },
+  {
+    id: 'coffee',
+    name: 'Coffee',
+    title: 'Indian Style Coffee',
+    kicker: 'Rich and milky',
+    note: 'Indian-style coffee premix, poured from the same machine as the chai.',
+    tasting: ['Rich coffee', 'Milky and smooth', 'One-press pour'],
+    // No pack artwork yet: the panel shows an empty label plate until the client sends it.
+    packAlt: 'Chai Depot Indian Style Coffee premix, 2 lb vending pack',
+    palette: { stage: '#1a120d', accent: '#b07a4a', glow: '#dbab78', liquid: '#6b4428', cup: '#7a4a2a', label: '#7a4a2a', steam: 0.85 },
+    ingredients: ['seeds', 'leaf', 'seeds', 'cinnamon', 'seeds'],
+    verified: false,
+    todo: 'Awaiting the Indian Style Coffee label artwork, tasting notes and pack size.',
+  },
 ];
 
-/** Groups shown as panels on mobile: the two cardamom variants share one panel. */
-export const FLAVOUR_GROUPS: Flavour[][] = [
-  FLAVOURS.filter((f) => f.family === 'cardamom'),
-  ...FLAVOURS.filter((f) => !f.family).map((f) => [f]),
-];
+/** Ratio used for a label plate while a flavour has no artwork. */
+export const PACK_PLACEHOLDER_RATIO = 0.75;
+
+/**
+ * Panels on mobile: consecutive flavours from the same family (the two cardamoms) share
+ * one panel with a sweetness switch. Everything else gets a panel of its own.
+ */
+export const FLAVOUR_GROUPS: Flavour[][] = FLAVOURS.reduce<Flavour[][]>((groups, f) => {
+  const last = groups[groups.length - 1];
+  if (last && f.family && last[0].family === f.family) last.push(f);
+  else groups.push([f]);
+  return groups;
+}, []);

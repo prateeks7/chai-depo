@@ -4,9 +4,9 @@ import { IngredientField } from '../../components/Ingredients';
 import { Picture } from '../../components/Picture';
 import { SpinCup, type SpinState } from '../../components/SpinCup';
 import { Steam } from '../../components/Steam';
-import { FLAVOURS } from '../../content/flavours';
+import { FLAVOURS, PACK_PLACEHOLDER_RATIO } from '../../content/flavours';
 import { images } from '../../content/images';
-import { FlavourCopy, HeroCopy, PackFan, PromiseList, SupplyCopy } from './PourCopy';
+import { FlavourCopy, HeroCopy, PackFan, PackPlaceholder, PromiseList, SupplyCopy } from './PourCopy';
 import { usePourTimeline } from './usePourTimeline';
 import s from './PourStage.module.css';
 
@@ -66,16 +66,16 @@ export function PourStage() {
         <div className={s.packSlot}>
           <div className={s.packShadow} data-pack-shadow aria-hidden="true" />
           {FLAVOURS.map((f) => (
-            <div key={f.id} className={s.pack} data-pack={f.id} style={{ '--label-ratio': images[f.pack].ratio } as CSSProperties}>
+            <div key={f.id} className={s.pack} data-pack={f.id} style={{ '--label-ratio': f.pack ? images[f.pack].ratio : PACK_PLACEHOLDER_RATIO } as CSSProperties}>
               <div className={s.packMedia}>
-                <Picture name={f.pack} alt={f.packAlt} sizes="(min-width: 1024px) 34vw, 60vw" />
+                {f.pack ? <Picture name={f.pack} alt={f.packAlt} sizes="(min-width: 1024px) 34vw, 60vw" /> : <PackPlaceholder name={f.name} />}
               </div>
             </div>
           ))}
           {/* Callouts sit outside the clipped panels so their labels can reach onto the stage.
               Each one repeats its panel's geometry, so label coordinates land on the print. */}
           {FLAVOURS.filter((f) => f.badge).map((f) => (
-            <div key={f.id} className={s.calloutLayer} data-callout={f.id} style={{ '--label-ratio': images[f.pack].ratio } as CSSProperties}>
+            <div key={f.id} className={s.calloutLayer} data-callout={f.id} style={{ '--label-ratio': f.pack ? images[f.pack].ratio : PACK_PLACEHOLDER_RATIO } as CSSProperties}>
               <div className={s.packMedia}>
                 <div className={s.callout} style={{ left: `${f.badge!.at.x * 100}%`, top: `${f.badge!.at.y * 100}%` }}>
                   <svg viewBox="0 0 100 100" aria-hidden="true">

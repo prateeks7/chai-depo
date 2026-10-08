@@ -183,6 +183,14 @@
   transform: translateX(-50%) translateX(33cqw) scale(0.58);
 }
 
+/* Further round the carousel than a neighbour: parked, out of sight. */
+.machine[data-pos='2'] {
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-50%) scale(0.5);
+}
+
 @media (hover: hover) {
   .machine:not([data-pos='0']):hover {
     opacity: 0.8;
@@ -391,13 +399,39 @@
   color: var(--ink);
 }
 
+.count em {
+  font-style: normal;
+  opacity: 0.75;
+}
+
 .name {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
   margin-top: 10px;
   font-family: var(--font-display);
   font-size: var(--step-h3);
   font-weight: 800;
   line-height: 1;
   text-transform: uppercase;
+}
+
+/* 01 .. 04, as the client numbers the range. */
+.rank {
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--copper-deep);
+}
+
+.canisters {
+  margin-top: 8px;
+  font-family: var(--font-display);
+  font-size: var(--step-small);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--copper-deep);
 }
 
 .suits {

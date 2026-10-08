@@ -27,11 +27,12 @@ const WIDTHS = [320, 480, 640, 960];
 
 /** Same values as palette.cup in src/content/flavours.ts. */
 const TINTS = {
+  masala: '#ad2622',
+  jaggery: '#a96830',
   cardamom: '#92a452',
   'cardamom-nas': '#b8c088',
-  jaggery: '#a96830',
-  masala: '#ad2622',
   karak: '#c9a228',
+  coffee: '#7a4a2a',
 };
 
 /**

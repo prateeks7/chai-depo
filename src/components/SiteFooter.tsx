@@ -12,7 +12,7 @@ export function SiteFooter() {
       <div className={s.inner}>
         <div className={s.brand}>
           <Picture name="logo" alt={site.brand} sizes="160px" className={s.logo} />
-          <p className={s.line}>Chai vending machines and premixes for workplaces, hospitality and events.</p>
+          <p className={s.line}>Hot beverage vending machines and authentic premixes for workplaces, hospitality and events.</p>
         </div>
 
         <div className={s.col}>
