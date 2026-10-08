@@ -35,13 +35,36 @@ export function useSmoothScroll() {
         velocity += (self.getVelocity() - velocity) * 0.25;
       },
     });
+
+    // How far there is to scroll, measured when the page changes rather than every
+    // frame: reading scrollHeight forces a full layout, and this runs on every tick.
+    const root = document.documentElement;
+    let maxScroll = 0;
+    const measure = () => {
+      maxScroll = root.scrollHeight - window.innerHeight;
+    };
+    measure();
+    window.addEventListener('resize', measure, { passive: true });
+    ScrollTrigger.addEventListener('refresh', measure);
+
+    // Both custom properties sit on the root, so every write restyles the whole page.
+    // Writing only when the rounded value actually changes costs nothing while idle and
+    // skips most frames while scrolling.
+    let lastSkew = '';
+    let lastProgress = '';
     const decay = () => {
       velocity *= 0.92;
       // Shared lean: big display type tilts with the scroll and settles when it stops.
-      const skew = Math.max(-3.4, Math.min(3.4, velocity / 420));
-      document.documentElement.style.setProperty('--vskew', `${skew.toFixed(2)}deg`);
-      const max = document.documentElement.scrollHeight - window.innerHeight;
-      document.documentElement.style.setProperty('--scroll-progress', max > 0 ? (window.scrollY / max).toFixed(4) : '0');
+      const skew = `${Math.max(-3.4, Math.min(3.4, velocity / 420)).toFixed(1)}deg`;
+      if (skew !== lastSkew) {
+        lastSkew = skew;
+        root.style.setProperty('--vskew', skew);
+      }
+      const progress = maxScroll > 0 ? (window.scrollY / maxScroll).toFixed(3) : '0';
+      if (progress !== lastProgress) {
+        lastProgress = progress;
+        root.style.setProperty('--scroll-progress', progress);
+      }
     };
     gsap.ticker.add(decay);
 
@@ -50,7 +73,9 @@ export function useSmoothScroll() {
       gsap.ticker.remove(decay);
       gsap.ticker.lagSmoothing(500, 33);
       tracker.kill();
-      document.documentElement.style.removeProperty('--vskew');
+      window.removeEventListener('resize', measure);
+      ScrollTrigger.removeEventListener('refresh', measure);
+      root.style.removeProperty('--vskew');
       lenis?.destroy();
       lenis = null;
       velocity = 0;

@@ -113,6 +113,21 @@ button {
   transform: none;
 }
 
+/*
+ * Phones: let the browser skip rendering sections that are far off screen. On a page
+ * this long that is the difference between a scroll that stutters and one that does not
+ * (it roughly halved the dropped frames on a throttled phone). `auto` in the intrinsic
+ * size means each section remembers its real height once rendered, so the scrollbar
+ * stays put. Kept under the 900px breakpoint, below both the pinned flavour scene and
+ * the sticky How it works layout, neither of which should have its measurements skipped.
+ */
+@media (max-width: 899px) {
+  section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 760px;
+  }
+}
+
 /* Paper grain for cream sections: a small static tile, never animated. */
 .grain {
   position: relative;
